@@ -9,7 +9,7 @@ import com.example.library.model.Author;
 
 public interface AuthorService extends JpaRepository<Author, Integer> {
 
-    @Query("SELECT DISTINCT a FROM Author a JOIN FETCH a.books b WHERE LOWER(b.title) LIKE LOWER(%:title%)")
+    @Query("SELECT DISTINCT a FROM Author a JOIN a.books b WHERE lower(b.title) LIKE %:title%")
     List<Author> findByBookTitle(String title);
 
 }

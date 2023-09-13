@@ -52,7 +52,7 @@ public class BookController {
     @GetMapping("/author2")
     public ResponseEntity<String> getAuthorUsingJPA(@RequestParam String title) {
 
-        String ret = authorService.findByBookTitle(title).stream().map(Author::getName)
+        String ret = authorService.findByBookTitle(title.toLowerCase()).stream().map(Author::getName)
                 .collect(Collectors.joining(", "));
 
         return ResponseEntity.ok(ret);
