@@ -24,43 +24,64 @@ import com.example.library.service.BookService;
 @RequestMapping("/library")
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
+
+    private final AuthorService authorService;
 
     @Autowired
-    private AuthorService authorService;
+    public BookController(BookService bookService, AuthorService authorService) {
+        this.authorService = authorService;
+        this.bookService = bookService;
+    }
 
     @CrossOrigin
     @GetMapping("/book")
     public ResponseEntity<String> getBooks() {
 
-        String ret = bookService.findAll().stream().map(Book::getTitle)
-                .collect(Collectors.joining(", "));
+        String ret = "";
 
-        return ResponseEntity.ok(ret);
+        try {
+            ret = bookService.findAll().stream().map(Book::getTitle)
+                    .collect(Collectors.joining(", "));
+
+            return ResponseEntity.ok(ret);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @CrossOrigin
-    @GetMapping("/author")
-    public ResponseEntity<String> getAuthorUsingJava(@RequestParam String title) {
+    @GetMapping("/bookbytitle")
+    public ResponseEntity<String> getBooksByTitle(@RequestParam String title) {
 
-        String ret = authorService.findAll().stream()
-                .filter(a -> (a.getBooks().stream()
-                        .anyMatch(b -> (b.getTitle().toLowerCase().contains(title.toLowerCase())))))
-                .map(Author::getName)
-                .collect(Collectors.joining(", "));
+        String ret = "";
 
-        return ResponseEntity.ok(ret);
+        try {
+            ret = bookService.findByTitle(title).stream().map(Book::getTitle)
+                    .collect(Collectors.joining(", "));
+
+            return ResponseEntity.ok(ret);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @CrossOrigin
-    @GetMapping("/author2")
-    public ResponseEntity<String> getAuthorUsingJPA(@RequestParam String title) {
+    @GetMapping("/bookbyisbn")
+    public ResponseEntity<String> getBooksByIsbn(@RequestParam long isbn) {
 
-        String ret = authorService.findByBookTitle(title.toLowerCase()).stream().map(Author::getName)
-                .collect(Collectors.joining(", "));
+        String ret = "";
 
-        return ResponseEntity.ok(ret);
+        try {
+            ret = bookService.findByIsbn(isbn).getTitle();
+
+            return ResponseEntity.ok(ret);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @CrossOrigin

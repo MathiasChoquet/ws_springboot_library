@@ -21,6 +21,9 @@ public class Book {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "isbn")
+    private Long isbn;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
@@ -31,6 +34,14 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Long getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(Long isbn) {
+        this.isbn = isbn;
     }
 
     public Author getAuthor() {
