@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.example.library.model.Book;
 
-public interface BookService extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT DISTINCT b FROM Book b WHERE lower(b.title) LIKE %:title%")
     List<Book> findByTitle(String title);

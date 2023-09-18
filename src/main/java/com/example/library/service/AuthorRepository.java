@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.example.library.model.Author;
 
-public interface AuthorService extends JpaRepository<Author, Integer> {
+public interface AuthorRepository extends JpaRepository<Author, Integer> {
 
     @Query("SELECT DISTINCT a FROM Author a JOIN a.books b WHERE lower(b.title) LIKE %:title%")
     List<Author> findByBookTitlePart(String title);

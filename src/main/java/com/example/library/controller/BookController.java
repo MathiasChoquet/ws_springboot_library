@@ -17,21 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.library.dto.BookDTO;
 import com.example.library.model.Author;
 import com.example.library.model.Book;
-import com.example.library.service.AuthorService;
-import com.example.library.service.BookService;
+import com.example.library.service.AuthorRepository;
+import com.example.library.service.BookRepository;
 
 @RestController
 @RequestMapping("/library")
 public class BookController {
 
-    private final BookService bookService;
+    private final BookRepository bookRepository;
 
-    private final AuthorService authorService;
+    private final AuthorRepository authorRepository;
 
     @Autowired
-    public BookController(BookService bookService, AuthorService authorService) {
-        this.authorService = authorService;
-        this.bookService = bookService;
+    public BookController(BookRepository bookRepository, AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+        this.bookRepository = bookRepository;
     }
 
     @CrossOrigin
@@ -41,7 +41,7 @@ public class BookController {
         String ret = "";
 
         try {
-            ret = bookService.findAll().stream().map(Book::getTitle)
+            ret = bookRepository.findAll().stream().map(Book::getTitle)
                     .collect(Collectors.joining(", "));
 
             return ResponseEntity.ok(ret);
@@ -58,7 +58,7 @@ public class BookController {
         String ret = "";
 
         try {
-            ret = bookService.findByTitle(title).stream().map(Book::getTitle)
+            ret = bookRepository.findByTitle(title).stream().map(Book::getTitle)
                     .collect(Collectors.joining(", "));
 
             return ResponseEntity.ok(ret);
@@ -75,7 +75,7 @@ public class BookController {
         String ret = "";
 
         try {
-            ret = bookService.findByIsbn(isbn).getTitle();
+            ret = bookRepository.findByIsbn(isbn).getTitle();
 
             return ResponseEntity.ok(ret);
 
@@ -93,20 +93,20 @@ public class BookController {
             Book b = new Book();
 
             // get author
-            Optional<Author> author = authorService.findByName(bookDTO.getAuthor());
+            Optional<Author> author = authorRepository.findByName(bookDTO.getAuthor());
 
             if (author.isPresent()) {
                 b.setAuthor(author.get());
             } else {
                 Author a = new Author();
                 a.setName(bookDTO.getAuthor());
-                authorService.save(a);
+                authorRepository.save(a);
                 b.setAuthor(a);
             }
 
             b.setTitle(bookDTO.getTitle());
             b.setIsbn(bookDTO.getIsbn());
-            bookService.save(b);
+            bookRepository.save(b);
 
             return ResponseEntity.ok().build();
 

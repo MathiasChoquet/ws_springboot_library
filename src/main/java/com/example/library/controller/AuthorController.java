@@ -12,14 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.library.model.Author;
-import com.example.library.service.AuthorService;
+import com.example.library.service.AuthorRepository;
 
 @RestController
 @RequestMapping("/library")
 public class AuthorController {
 
+    public AuthorController() {
+        System.out.println("AuthorController");
+    }
+
     @Autowired
-    private AuthorService authorService;
+    private AuthorRepository authorRepository;
 
     @CrossOrigin
     @GetMapping("/author")
@@ -28,7 +32,7 @@ public class AuthorController {
         String ret = "";
 
         try {
-            ret = authorService.findAll().stream()
+            ret = authorRepository.findAll().stream()
                     .filter(a -> (a.getBooks().stream()
                             .anyMatch(b -> (b.getTitle().toLowerCase().contains(title.toLowerCase())))))
                     .map(Author::getName)
@@ -48,7 +52,7 @@ public class AuthorController {
 
         try {
 
-            ret = authorService.findByBookTitlePart(title.toLowerCase()).stream().map(Author::getName)
+            ret = authorRepository.findByBookTitlePart(title.toLowerCase()).stream().map(Author::getName)
                     .collect(Collectors.joining(", "));
             return ResponseEntity.ok(ret);
 
