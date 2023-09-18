@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.library.controller.dto.BookDTO;
+import com.example.library.dto.BookDTO;
 import com.example.library.model.Author;
 import com.example.library.model.Book;
 import com.example.library.service.AuthorService;
@@ -105,6 +105,7 @@ public class BookController {
             }
 
             b.setTitle(bookDTO.getTitle());
+            b.setIsbn(bookDTO.getIsbn());
             bookService.save(b);
 
             return ResponseEntity.ok().build();

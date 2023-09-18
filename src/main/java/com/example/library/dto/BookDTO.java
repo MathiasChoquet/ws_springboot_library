@@ -1,8 +1,10 @@
-package com.example.library.controller.dto;
+package com.example.library.dto;
 
 public class BookDTO {
 
     private String title;
+
+    private Long Isbn;
 
     private String author;
 
@@ -12,6 +14,14 @@ public class BookDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Long getIsbn() {
+        return Isbn;
+    }
+
+    public void setIsbn(Long isbn) {
+        Isbn = isbn;
     }
 
     public String getAuthor() {
