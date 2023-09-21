@@ -32,6 +32,7 @@ public class AuthorController {
         String ret = "";
 
         try {
+
             ret = authorRepository.findAll().stream()
                     .filter(a -> (a.getBooks().stream()
                             .anyMatch(b -> (b.getTitle().toLowerCase().contains(title.toLowerCase())))))
@@ -40,6 +41,7 @@ public class AuthorController {
 
             return ResponseEntity.ok(ret);
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -57,6 +59,7 @@ public class AuthorController {
             return ResponseEntity.ok(ret);
 
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
