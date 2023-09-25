@@ -1,5 +1,6 @@
 package com.example.library.controller;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,8 @@ import com.example.library.model.Author;
 import com.example.library.model.Book;
 import com.example.library.service.AuthorRepository;
 import com.example.library.service.BookRepository;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/library")
@@ -84,6 +87,7 @@ public class BookController {
         }
     }
 
+    @Transactional
     @CrossOrigin
     @PostMapping("/book")
     public ResponseEntity<Void> createBook(@RequestBody BookDTO bookDTO) {
@@ -96,12 +100,12 @@ public class BookController {
             Optional<Author> author = authorRepository.findByName(bookDTO.getAuthor());
 
             if (author.isPresent()) {
-                b.setAuthor(author.get());
+                b.setAuthors(Arrays.asList(author.get()));
             } else {
                 Author a = new Author();
                 a.setName(bookDTO.getAuthor());
                 authorRepository.save(a);
-                b.setAuthor(a);
+                b.setAuthors(Arrays.asList(a));
             }
 
             b.setTitle(bookDTO.getTitle());
