@@ -26,7 +26,7 @@ public class AuthorController {
     private AuthorRepository authorRepository;
 
     @CrossOrigin
-    @GetMapping("/author")
+    @GetMapping("/author_JAVA")
     public ResponseEntity<String> getAuthorUsingJava(@RequestParam String title) {
 
         String ret = "";
@@ -47,7 +47,7 @@ public class AuthorController {
     }
 
     @CrossOrigin
-    @GetMapping("/author2")
+    @GetMapping("/author_SQL")
     public ResponseEntity<String> getAuthorUsingJPA(@RequestParam String title) {
 
         String ret = "";

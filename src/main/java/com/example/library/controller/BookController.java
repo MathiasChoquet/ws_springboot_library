@@ -1,5 +1,7 @@
 package com.example.library.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,15 +38,23 @@ public class BookController {
 
     @CrossOrigin
     @GetMapping("/book")
-    public ResponseEntity<String> getBooks() {
+    public ResponseEntity<List<BookDTO>> getBooks() {
+        List<BookDTO> dtos = new ArrayList<BookDTO>();
+        try
 
-        String ret = "";
-
-        try {
-            ret = bookRepository.findAll().stream().map(Book::getTitle)
-                    .collect(Collectors.joining(", "));
-
-            return ResponseEntity.ok(ret);
+        {
+            List<Book> books = bookRepository.findAll();
+            for (Book book : books) {
+                BookDTO dto = new BookDTO();
+                dto.setTitle(book.getTitle());
+                dto.setIsbn(book.getIsbn());
+                dtos.add(dto);
+            }
+            /*
+             * ret = bookRepository.findAll().stream().limit(100).map(Book::getTitle)
+             * .collect(Collectors.joining(", "));
+             */
+            return ResponseEntity.ok(dtos);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
