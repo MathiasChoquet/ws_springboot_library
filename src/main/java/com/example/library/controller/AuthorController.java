@@ -16,7 +16,8 @@ import com.example.library.service.AuthorService;
 public class AuthorController {
 
     public AuthorController() {
-        System.out.println("===>  AuthorController");
+        System.out.println("===> Constructor AuthorController Thread ID=[" + Thread.currentThread().getId()
+                + "] instance de classe=[" + this.hashCode() + "]");
     }
 
     @Autowired
@@ -27,6 +28,10 @@ public class AuthorController {
     public ResponseEntity<String> getAuthorUsingJava(@RequestParam String title) {
 
         String ret = "";
+
+        System.out
+                .println(" => AuthorController::getAuthorUsingJava Thread ID=[" + Thread.currentThread().getId()
+                        + "] instance de classe=[" + this.hashCode() + "]");
 
         try {
             ret = authorService.containsTitleUsingJava(title);

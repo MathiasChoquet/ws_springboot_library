@@ -14,10 +14,13 @@ public class AuthorService {
     private AuthorRepository authorRepository;
 
     public AuthorService() {
-        System.out.println("===>  Constructor AuthorService");
+        System.out.println("===> Constructor AuthorService Thread ID=[" + Thread.currentThread().getId()
+                + "] instance de classe=[" + this.hashCode() + "]");
     }
 
     public String containsTitleUsingJava(String title) {
+        System.out.println(" => AuthorService::getAuthorUsingJava Thread ID=[" + Thread.currentThread().getId()
+                + "] instance de classe=[" + this.hashCode() + "]");
         return authorRepository.findAll().stream()
                 .filter(a -> (a.getBooks().stream()
                         .anyMatch(b -> (b.getTitle().toLowerCase().contains(title.toLowerCase())))))
