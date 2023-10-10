@@ -1,5 +1,7 @@
 package com.example.library.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +25,9 @@ public class BookController {
 
     @CrossOrigin
     @GetMapping("/book")
-    public ResponseEntity<String> getBooks() {
+    public ResponseEntity<List<String>> getBooks() {
         try {
-            return ResponseEntity.ok(String.join(",", bookService.getAllTitle()));
+            return ResponseEntity.ok(bookService.getAllTitle());
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
